@@ -38,6 +38,8 @@ services:
     ports:
       - "3000:3000"
     restart: always
+    volumes:
+      - ./.env.production:/app/.env.production
 
   database-usuarios:
     image: postgres:15
