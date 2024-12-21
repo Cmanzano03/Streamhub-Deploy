@@ -1,0 +1,104 @@
+services:
+  usuarios:
+    image: cmanzanoo/streamhub:usuarios
+    container_name: spring-boot-usuarios
+    ports:
+      - "8082:8080"
+    environment:
+      - JAVA_OPTS=-Xms256m -Xmx512m
+    restart: always
+    depends_on:
+      - database-usuarios
+
+  contenidos:
+    image: cmanzanoo/streamhub:contenidos
+    container_name: spring-boot-contenidos
+    ports:
+      - "8081:8080"
+    environment:
+      - JAVA_OPTS=-Xms256m -Xmx512m
+    restart: always
+    depends_on:
+      - database-contenidos
+
+  funcionalidades_extra:
+    image: cmanzanoo/streamhub:funcionalidades_extra
+    container_name: spring-boot-funcionalidades_extra
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xms256m -Xmx512m
+    restart: always
+    depends_on:
+      - database-funcionalidades_extra
+
+  gui:
+    image: cmanzanoo/streamhub:gui
+    container_name: react-gui
+    ports:
+      - "3000:3000"
+    restart: always
+
+  database-usuarios:
+    image: postgres:15
+    container_name: usuarios-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: Usuarios
+    volumes:
+      - postgres-data-usuarios:/var/lib/postgresql/data
+      - ./init-usuarios.sql:/docker-entrypoint-initdb.d/init.sql
+
+  database-contenidos:
+    image: postgres:15
+    container_name: contenidos-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: Contenidos
+    volumes:
+      - postgres-data-contenidos:/var/lib/postgresql/data
+      - ./init-contenidos.sql:/docker-entrypoint-initdb.d/init.sql
+
+  database-funcionalidades_extra:
+    image: postgres:15
+    container_name: funcionalidades_extra-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: FuncionalidadesExtra
+    volumes:
+      - postgres-data-funcionalidades_extra:/var/lib/postgresql/data
+      - ./init-funcionalidades_extra.sql:/docker-entrypoint-initdb.d/init.sql
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: streamhub@uex.es
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: "10"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "8888:80"
+    depends_on:
+      - database-usuarios
+      - database-contenidos
+      - database-funcionalidades_extra
+    
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  postgres-data-usuarios:
+  postgres-data-contenidos:
+  postgres-data-funcionalidades_extra:
+  pgadmin-data:
