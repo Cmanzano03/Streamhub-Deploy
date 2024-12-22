@@ -33,7 +33,7 @@ services:
       - database-funcionalidades_extra
 
   gui:
-    image: cmanzanoo/streamhub:gui
+    image: cmanzanoo/streamhub:gui-v2
     container_name: react-gui
     ports:
       - "3000:3000"
