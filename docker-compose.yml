@@ -1,6 +1,6 @@
 services:
   usuarios:
-    image: cmanzanoo/streamhub:usuarios
+    image: cmanzanoo/streamhub:usuarios-v2
     container_name: spring-boot-usuarios
     ports:
       - "8082:8080"
