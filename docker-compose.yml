@@ -22,7 +22,7 @@ services:
       - database-contenidos
 
   funcionalidades_extra:
-    image: cmanzanoo/streamhub:funcionalidades_extra
+    image: cmanzanoo/streamhub:funcionalidades_extra-v2
     container_name: spring-boot-funcionalidades_extra
     ports:
       - "8080:8080"
