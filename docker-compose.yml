@@ -11,7 +11,7 @@ services:
       - database-usuarios
 
   contenidos:
-    image: cmanzanoo/streamhub:contenidos
+    image: cmanzanoo/streamhub:contenidosv2
     container_name: spring-boot-contenidos
     ports:
       - "8081:8080"
